@@ -22,7 +22,7 @@ import java.util.UUID;
 public class allProductsInStock {
 
     private final OrderRepository orderRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     public void placeService(OrderRequestDto orderRequestDto) throws IllegalAccessException {
         Order order = Order.builder().orderNumber(UUID.randomUUID().toString()).build();
@@ -39,9 +39,10 @@ public class allProductsInStock {
         List<String> skuCodes = order.getOrderLineItemsList().stream().map(OrderLineItems::getSkuCode).toList();
 
 
-        InventoryResponseDto[] inventoryResponseArray = webClient.get()
+        InventoryResponseDto[] inventoryResponseArray = webClientBuilder.build()
+                .get()
                 .uri(
-                        "http://localhost:8183/api/inventory",
+                        "http://inventory-service/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build()
                 )
                 .retrieve()

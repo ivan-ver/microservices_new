@@ -20,7 +20,7 @@ public class OrderController {
             orderService.placeService(orderRequestDto);
             return "success";
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            return "error IllegalAccessException";
         }
     }
 }
